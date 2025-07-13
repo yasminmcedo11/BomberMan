@@ -37,7 +37,10 @@ class Janela:
     def carregarMapa(self, arquivo):
         with open(arquivo, "r") as f:
             linhas = f.readlines()
-        return [list(linha.strip()) for linha in linhas]
+        
+        self.mapaOriginal = [list(linha.strip()) for linha in linhas]
+
+        return [linha.copy() for linha in self.mapaOriginal]
     
     def carregarImagem(self, nome):
         imagem = pygame.image.load(os.path.join("assets", nome)).convert_alpha()
