@@ -9,11 +9,12 @@ clock = pygame.time.Clock()
 rodando = True
 menu = Menu()
 mouse = Mouse()
+janela = Janela("mapas/mapa1.txt")
+tecla_pressionada = False
 
 
 
 while True:
-
     if menu.getEstadoAtual() == "menu":
         menu.desenharMenu()
 
@@ -43,6 +44,17 @@ while True:
 
     elif menu.getEstadoAtual() == "jogo":
         menu.clicarJogar()
+        delta_time = clock.tick(60) / 1000.0
+
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                rodando = False
+
+
+        # Desenhar mapa
+        janela.desenharMapa()
+        janela.desenharPlayer()
+        janela.atualizarJanela(delta_time)
         
 
         if menu.teclado.key_pressed("ESC"):
