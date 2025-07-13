@@ -10,8 +10,6 @@ rodando = True
 menu = Menu()
 mouse = Mouse()
 janela = Janela("mapas/mapa1.txt")
-tecla_pressionada = False
-
 
 
 while True:
@@ -49,6 +47,17 @@ while True:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 rodando = False
+
+        teclas = pygame.key.get_pressed()
+        if not janela.player.esta_se_movendo():
+            if teclas[pygame.K_w] or teclas[pygame.K_UP]:
+                janela.player.mover("cima", janela.getMapa())
+            elif teclas[pygame.K_s] or teclas[pygame.K_DOWN]:
+                janela.player.mover("baixo", janela.getMapa())
+            elif teclas[pygame.K_a] or teclas[pygame.K_LEFT]:
+                janela.player.mover("esquerda", janela.getMapa())
+            elif teclas[pygame.K_d] or teclas[pygame.K_RIGHT]:
+                janela.player.mover("direita", janela.getMapa())
 
 
         # Desenhar mapa
