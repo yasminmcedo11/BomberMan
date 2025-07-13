@@ -5,8 +5,9 @@ import os
 import uuid
 
 class Player:
-    def __init__(self, tile_size=46):
+    def __init__(self, janela, tile_size=46):
         self.tileSize = tile_size
+        self.janela = janela
         self.velocidade = 250
 
         # Posição lógica/alvo no grid
@@ -15,23 +16,12 @@ class Player:
         self.alvo_linha = 1
         self.alvo_coluna = 1
 
-        self.player = self.carregar_sprite_escalado("assets/walking pose 1.png", 32, 48, frames=4)
+        self.player = self.janela.carregar_sprite_escalado("assets/walking pose 1.png", 32, 48, frames=4)
         self.player.set_position(1 * self.tileSize, 1 * self.tileSize)  # Posição no grid
         self.player.set_total_duration(800)
 
         self.bombas = []
 
-    def carregar_sprite_escalado(self, caminho, largura_frame, altura_frame, frames=4):
-        imagemOriginal = pygame.image.load(caminho)
-        larguraTotal = largura_frame * frames
-        imagemEscalada = pygame.transform.scale(imagemOriginal, (larguraTotal, altura_frame))
-
-        temp_path = f"assets/temp_scaled_{uuid.uuid4().hex}.png"
-        pygame.image.save(imagemEscalada, temp_path)
-
-        sprite = Sprite(temp_path, frames=frames)
-        os.remove(temp_path)
-        return sprite
 
     def mover(self, direcao, mapa):
         if self.esta_se_movendo():
@@ -95,7 +85,7 @@ class Player:
             if bomba.linha == self.linha and bomba.coluna == self.coluna:
                 return  
 
-        nova_bomba = Bomba(self.linha, self.coluna, self.tileSize)
+        nova_bomba = Bomba(self.linha, self.coluna, self.tileSize, self.janela)
         self.bombas.append(nova_bomba)
     
     def draw(self):

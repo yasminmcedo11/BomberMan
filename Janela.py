@@ -2,6 +2,7 @@ from PPlay.sprite import *
 from Player import Player
 import pygame
 import os
+import uuid
 
 class Janela:
     def __init__(self, mapa_arquivo, tile_size=46):
@@ -29,7 +30,7 @@ class Janela:
             "B": self.carregarImagem("blocosDestrutivos.png")
         }
 
-        self.player = Player()
+        self.player = Player(self)
         
                 
 
@@ -41,6 +42,18 @@ class Janela:
     def carregarImagem(self, nome):
         imagem = pygame.image.load(os.path.join("assets", nome)).convert_alpha()
         return pygame.transform.scale(imagem, (self.tileSize, self.tileSize))
+
+    def carregar_sprite_escalado(self, caminho, largura_frame, altura_frame, frames):
+        imagemOriginal = pygame.image.load(caminho)
+        larguraTotal = largura_frame * frames
+        imagemEscalada = pygame.transform.scale(imagemOriginal, (larguraTotal, altura_frame))
+
+        temp_path = f"assets/temp_scaled_{uuid.uuid4().hex}.png"
+        pygame.image.save(imagemEscalada, temp_path)
+
+        sprite = Sprite(temp_path, frames=frames)
+        os.remove(temp_path)
+        return sprite
 
     def desenharMapa(self):
         self.tela.fill((0, 0, 0))  

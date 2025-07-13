@@ -2,7 +2,8 @@ from PPlay.sprite import*
 import time
 
 class Bomba:
-    def __init__(self, linha, coluna, tileSize, tempo_antes_explodir=2):
+    def __init__(self, linha, coluna, tileSize, janela, tempo_antes_explodir=2):
+        self.janela = janela  
         self.linha = linha
         self.coluna = coluna
         self.tileSize = tileSize
@@ -10,17 +11,24 @@ class Bomba:
         self.explodiu = False
         self.tempo_criacao = time.time()
         self.tempo_antes_explodir = tempo_antes_explodir
+        self.finalizada = False
 
-        self.bomba = Sprite("assets/bomb3.png")
+        # Usa o método da janela para carregar e escalar o sprite da bomba
+        self.bomba = self.janela.carregar_sprite_escalado(
+            "assets/bomb3.png", 32, 32, frames=1
+        )
         self.bomba.set_position(coluna * tileSize, linha * tileSize)
 
-        # Animação da explosão
         self.explosao = [
-            Sprite(f"assets/explosion{i}.png") for i in range(1, 7)
+            self.janela.carregar_sprite_escalado(
+                f"assets/explosion{i}.png", 32, 32, frames=4
+            )
+            for i in range(1, 7)
         ]
         for spr in self.explosao:
             spr.set_position(coluna * tileSize, linha * tileSize)
-            spr.set_total_duration(300)  # ajustável
+            spr.set_total_duration(300)  
+
         self.frameAtual = 0
 
     def update(self):
