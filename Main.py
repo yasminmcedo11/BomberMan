@@ -49,6 +49,8 @@ while True:
                 rodando = False
 
         teclas = pygame.key.get_pressed()
+        if teclas[pygame.K_SPACE]:
+            janela.player.plantar_bomba()
         if not janela.player.esta_se_movendo():
             if teclas[pygame.K_w] or teclas[pygame.K_UP]:
                 janela.player.mover("cima", janela.getMapa())

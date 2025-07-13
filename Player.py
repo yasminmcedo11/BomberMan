@@ -1,4 +1,5 @@
 from PPlay.sprite import *
+from Bomba import Bomba
 import pygame
 import os
 import uuid
@@ -17,6 +18,8 @@ class Player:
         self.player = self.carregar_sprite_escalado("assets/walking pose 1.png", 32, 48, frames=4)
         self.player.set_position(1 * self.tileSize, 1 * self.tileSize)  # Posição no grid
         self.player.set_total_duration(800)
+
+        self.bombas = []
 
     def carregar_sprite_escalado(self, caminho, largura_frame, altura_frame, frames=4):
         imagemOriginal = pygame.image.load(caminho)
@@ -86,12 +89,26 @@ class Player:
         self.player.y += mover_y
         self.player.set_position(self.player.x, self.player.y)
     
+    def plantar_bomba(self):
+        # Planta a bomba na posição atual do grid, se ainda não tiver uma lá
+        for bomba in self.bombas:
+            if bomba.linha == self.linha and bomba.coluna == self.coluna:
+                return  
+
+        nova_bomba = Bomba(self.linha, self.coluna, self.tileSize)
+        self.bombas.append(nova_bomba)
+    
     def draw(self):
+        for bomba in self.bombas:
+            bomba.draw()
         self.player.draw()
 
     def update(self, delta_time):
         self.atualizarPosicao(delta_time)
         self.player.update()
+        for bomba in self.bombas:
+            bomba.update()
+        self.bombas = [b for b in self.bombas if not b.terminou()]
 
 
     
