@@ -10,6 +10,8 @@ class Janela:
     def __init__(self, mapa_arquivo, tile_size=46):
         self.tileSize = tile_size
         self.nome_arquivo = mapa_arquivo
+        self.fase = 1
+        self.numeroMonstros = 3 + self.fase //2
         
         self.mapa = self.carregarMapa(self.nome_arquivo)
         
@@ -34,7 +36,7 @@ class Janela:
         }
 
         self.player = Player(self)
-        self.monstros = self.criarMonstros(3)
+        self.monstros = self.criarMonstros()
         
                 
 
@@ -70,9 +72,9 @@ class Janela:
                     posicoes.append((i, j))
         return posicoes
     
-    def criarMonstros(self, k):
+    def criarMonstros(self):
         posicoes_validas = self.encontrarPosicoesValidas(excluidos={(1, 1)})
-        posicoes_monstros = random.sample(posicoes_validas, k)
+        posicoes_monstros = random.sample(posicoes_validas, self.numeroMonstros)
         return [Monstro(self, l, c) for l, c in posicoes_monstros]
 
     def desenharMapa(self):
@@ -115,8 +117,36 @@ class Janela:
     def reiniciarJogo(self):
         self.mapa = [linha.copy() for linha in self.mapaOriginal]    
         self.player = Player(self)
-        self.monstros = self.criarMonstros(3)
+        self.monstros = self.criarMonstros()
+    
+    def reiniciarFase(self):
+        self.mapa = [linha.copy() for linha in self.mapaOriginal]    
+        self.player = Player(self)
+        self.monstros = self.criarMonstros()
+    
+    def proximaFase(self):
+        self.fase += 1
+        try:
+            novo_mapa = f"mapas/mapa{self.fase}.txt"
+            self.mapaOriginal = self.carregarMapa(novo_mapa)  
+            self.mapa = [linha.copy() for linha in self.mapaOriginal]
+            self.player = Player(self)
+            self.numeroMonstros += self.fase//2
+            self.monstros = self.criarMonstros()
+        except FileNotFoundError:
+            print("Sem mais fases. Voltando ao menu.")
+            self.fase = 1
+            self.numeroMonstros = 3 + self.fase //2
+            self.mapaOriginal = self.carregarMapa(f"mapas/mapa1.txt")
+            self.mapa = [linha.copy() for linha in self.mapaOriginal]
+            self.player = Player(self)
+            self.monstros = self.criarMonstros()
+            return False  
+        return True
 
     def getMapa(self):
         return self.mapa
+    
+    def setFase(self, fase):
+        self.fase = fase
 

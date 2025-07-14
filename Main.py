@@ -2,14 +2,13 @@ from Menu import Menu
 from Janela import Janela
 from PPlay.mouse import *
 import pygame
-import os
+import time
 
 pygame.init()
 clock = pygame.time.Clock()
 rodando = True
 menu = Menu()
 mouse = Mouse()
-janela = Janela("mapas/mapa1.txt")
 
 
 while True:
@@ -18,6 +17,7 @@ while True:
 
         if mouse.is_over_object(menu.botaoJogar) and mouse.is_button_pressed(1):
             menu.setEstadoAtual("jogo")
+            janela = Janela("mapas/mapa1.txt")
         if mouse.is_over_object(menu.botaoDificuldade) and mouse.is_button_pressed(1):
             menu.setEstadoAtual("dificuldade")
         if mouse.is_over_object(menu.botaoSair) and mouse.is_button_pressed(1):
@@ -68,14 +68,16 @@ while True:
         janela.desenharMonstro()
         janela.atualizarJanela(delta_time)
 
+
         if janela.verificarDerrota():
-            janela.reiniciarJogo()
-            menu.setEstadoAtual("menu")
+            janela.reiniciarFase()
+            time.sleep(2)
+            #menu.setEstadoAtual("menu")
         
         if janela.verificarVitoria():
-            janela.reiniciarJogo()
-            menu.setEstadoAtual("menu")
-        
+            janela.proximaFase()
+            time.sleep(2)
+           #menu.setEstadoAtual("menu")
 
         if menu.teclado.key_pressed("ESC"):
             janela.reiniciarJogo()
