@@ -65,6 +65,7 @@ while True:
         # Desenhar mapa
         janela.desenharMapa()
         janela.desenharPlayer()
+        janela.desenharMonstro()
         janela.atualizarJanela(delta_time)
         
 

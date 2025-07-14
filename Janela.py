@@ -1,8 +1,10 @@
 from PPlay.sprite import *
 from Player import Player
+from Monstros import Monstro
 import pygame
 import os
 import uuid
+import random
 
 class Janela:
     def __init__(self, mapa_arquivo, tile_size=46):
@@ -32,6 +34,10 @@ class Janela:
         }
 
         self.player = Player(self)
+
+        posicoes_validas = self.encontrarPosicoesValidas(excluidos={(1, 1)})
+        posicoes_monstros = random.sample(posicoes_validas, k=3)
+        self.monstros = [Monstro(self, l, c) for l, c in posicoes_monstros]
         
                 
 
@@ -58,6 +64,14 @@ class Janela:
         sprite = Sprite(temp_path, frames=frames)
         os.remove(temp_path)
         return sprite
+    
+    def encontrarPosicoesValidas(self, excluidos=set()):
+        posicoes = []
+        for i, linha in enumerate(self.mapa):
+            for j, tile in enumerate(linha):
+                if tile in "GHIJ" and (i, j) not in excluidos:
+                    posicoes.append((i, j))
+        return posicoes
 
     def desenharMapa(self):
         self.tela.fill((0, 0, 0))  
@@ -68,10 +82,16 @@ class Janela:
 
     def desenharPlayer(self):
         self.player.draw()
+    
+    def desenharMonstro(self):
+        for monstro in self.monstros:
+            monstro.draw()
 
     def atualizarJanela(self, delta_time):
         pygame.display.flip()
         self.player.update(delta_time)
+        for monstro in self.monstros:
+            monstro.update(delta_time, self.mapa)
 
     def reiniciarJogo(self):
         self.mapa = [linha.copy() for linha in self.mapaOriginal]    
