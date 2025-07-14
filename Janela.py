@@ -34,7 +34,7 @@ class Janela:
         }
 
         self.player = Player(self)
-        self.monstros = self.criarMonstros()
+        self.monstros = self.criarMonstros(3)
         
                 
 
@@ -70,9 +70,9 @@ class Janela:
                     posicoes.append((i, j))
         return posicoes
     
-    def criarMonstros(self):
+    def criarMonstros(self, k):
         posicoes_validas = self.encontrarPosicoesValidas(excluidos={(1, 1)})
-        posicoes_monstros = random.sample(posicoes_validas, k=3)
+        posicoes_monstros = random.sample(posicoes_validas, k)
         return [Monstro(self, l, c) for l, c in posicoes_monstros]
 
     def desenharMapa(self):
@@ -90,15 +90,30 @@ class Janela:
             monstro.draw()
 
     def atualizarJanela(self, delta_time):
-        pygame.display.flip()
         self.player.update(delta_time)
         for monstro in self.monstros:
             monstro.update(delta_time, self.mapa)
 
+        self.player.verificarColisaoBombas(self.player.getBombas())
+        for monstro in self.monstros:
+            monstro.verificarColisaoBombas(self.player.getBombas())
+        self.monstros = [m for m in self.monstros if m.getEstaVivo()]
+
+        pygame.display.flip()
+    
+    def verificarVitoria(self):
+        if len(self.monstros) == 0:
+            return True
+        else:
+            return False
+    
+    def verificarDerrota(self):
+        return not self.player.getEstaVivo()
+
     def reiniciarJogo(self):
         self.mapa = [linha.copy() for linha in self.mapaOriginal]    
         self.player = Player(self)
-        self.monstros = self.criarMonstros()
+        self.monstros = self.criarMonstros(3)
 
     def getMapa(self):
         return self.mapa

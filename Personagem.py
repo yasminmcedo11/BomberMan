@@ -14,6 +14,7 @@ class Personagem:
         self.sprite = self.janela.carregar_sprite_escalado(sprite_path, 32, 48, frames=4)
         self.sprite.set_position(coluna * self.tileSize, linha * self.tileSize)
         self.sprite.set_total_duration(800)
+        self.vivo = True
 
     def esta_se_movendo(self):
         destino_x = self.alvo_coluna * self.tileSize
@@ -46,10 +47,30 @@ class Personagem:
         self.sprite.x += mover_x
         self.sprite.y += mover_y
         self.sprite.set_position(self.sprite.x, self.sprite.y)
+    
+    def verificarColisaoBombas(self, bombas):
+        if not self.vivo:
+            return
+
+        for bomba in bombas:
+            if bomba.explodiu and not bomba.finalizada:
+                if (self.linha, self.coluna) in bomba.tiles_explosao:
+                    self.morrer()
+                    break
+
+    def morrer(self):
+        self.vivo = False
+    
+    def getEstaVivo(self):
+        return self.vivo
 
     def draw(self):
+        if not self.vivo:
+            return
         self.sprite.draw()
 
     def update(self, delta_time):
+        if not self.vivo:
+            return
         self.atualizar_posicao(delta_time)
         self.sprite.update()

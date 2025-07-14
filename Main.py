@@ -67,6 +67,14 @@ while True:
         janela.desenharPlayer()
         janela.desenharMonstro()
         janela.atualizarJanela(delta_time)
+
+        if janela.verificarDerrota():
+            janela.reiniciarJogo()
+            menu.setEstadoAtual("menu")
+        
+        if janela.verificarVitoria():
+            janela.reiniciarJogo()
+            menu.setEstadoAtual("menu")
         
 
         if menu.teclado.key_pressed("ESC"):

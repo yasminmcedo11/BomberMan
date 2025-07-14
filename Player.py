@@ -10,7 +10,7 @@ class Player(Personagem):
         self.bombas = []
         self.tempo_ultima_bomba = 0
         self.cooldown_bomba = 2
-
+        
 
     def mover(self, direcao, mapa):
         if self.esta_se_movendo():
@@ -46,6 +46,9 @@ class Player(Personagem):
         nova_bomba = Bomba(self.linha, self.coluna, self.tileSize, self.janela)
         self.bombas.append(nova_bomba)
         self.tempo_ultima_bomba = tempo_atual
+    
+    def getBombas(self):
+        return self.bombas
     
     def draw(self):
         for bomba in self.bombas:
