@@ -69,7 +69,7 @@ while True:
         
 
         if menu.teclado.key_pressed("ESC"):
-            janela.mapa = [linha.copy() for linha in janela.mapaOriginal]
+            janela.reiniciarJogo()
             menu.setEstadoAtual("menu")
 
 

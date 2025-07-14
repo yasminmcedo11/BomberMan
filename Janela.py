@@ -7,8 +7,9 @@ import uuid
 class Janela:
     def __init__(self, mapa_arquivo, tile_size=46):
         self.tileSize = tile_size
+        self.nome_arquivo = mapa_arquivo
         
-        self.mapa = self.carregarMapa(mapa_arquivo)
+        self.mapa = self.carregarMapa(self.nome_arquivo)
         
         self.num_colunas = len(self.mapa[0])
         self.num_linhas = len(self.mapa)
@@ -71,6 +72,10 @@ class Janela:
     def atualizarJanela(self, delta_time):
         pygame.display.flip()
         self.player.update(delta_time)
+
+    def reiniciarJogo(self):
+        self.mapa = [linha.copy() for linha in self.mapaOriginal]    
+        self.player = Player(self)
 
     def getMapa(self):
         return self.mapa
