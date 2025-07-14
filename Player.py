@@ -49,6 +49,12 @@ class Player(Personagem):
     
     def getBombas(self):
         return self.bombas
+
+    def verificarColisaoPlayerMonstros(self, monstros):
+        for monstro in monstros:
+            if monstro.linha == self.linha and monstro.coluna == self.coluna:
+                self.morrer()
+                break
     
     def draw(self):
         for bomba in self.bombas:

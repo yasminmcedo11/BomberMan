@@ -99,6 +99,8 @@ class Janela:
             monstro.verificarColisaoBombas(self.player.getBombas())
         self.monstros = [m for m in self.monstros if m.getEstaVivo()]
 
+        self.player.verificarColisaoPlayerMonstros(self.monstros)
+
         pygame.display.flip()
     
     def verificarVitoria(self):
