@@ -7,11 +7,11 @@ import uuid
 import random
 
 class Janela:
-    def __init__(self, mapa_arquivo, tile_size=46):
+    def __init__(self, mapa_arquivo, fase, tile_size=46):
         self.tileSize = tile_size
         self.nome_arquivo = mapa_arquivo
-        self.fase = 1
-        self.numeroMonstros = 3 + self.fase //2
+        self.fase = fase
+        self.numeroMonstros = 2 + self.fase 
         
         self.mapa = self.carregarMapa(self.nome_arquivo)
         
