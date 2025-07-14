@@ -7,11 +7,12 @@ import uuid
 import random
 
 class Janela:
-    def __init__(self, mapa_arquivo, fase, tile_size=46):
+    def __init__(self, mapa_arquivo, fase, singlePlayer,tile_size=46):
         self.tileSize = tile_size
         self.nome_arquivo = mapa_arquivo
         self.fase = fase
         self.numeroMonstros = 2 + self.fase 
+        self.singlePlayer = singlePlayer
         
         self.mapa = self.carregarMapa(self.nome_arquivo)
         
@@ -35,8 +36,12 @@ class Janela:
             "B": self.carregarImagem("blocosDestrutivos.png")
         }
 
-        self.player = Player(self)
-        self.monstros = self.criarMonstros()
+        self.player = Player(self, 1)
+
+        if(self.singlePlayer):
+            self.monstros = self.criarMonstros()
+        else: 
+            self.player2 = Player(self, 2)
         
                 
 
@@ -86,6 +91,8 @@ class Janela:
 
     def desenharPlayer(self):
         self.player.draw()
+        if(self.singlePlayer == False):
+            self.player2.draw()
     
     def desenharMonstro(self):
         for monstro in self.monstros:
@@ -93,15 +100,20 @@ class Janela:
 
     def atualizarJanela(self, delta_time):
         self.player.update(delta_time)
-        for monstro in self.monstros:
-            monstro.update(delta_time, self.mapa)
-
         self.player.verificarColisaoBombas(self.player.getBombas())
-        for monstro in self.monstros:
-            monstro.verificarColisaoBombas(self.player.getBombas())
-        self.monstros = [m for m in self.monstros if m.getEstaVivo()]
 
-        self.player.verificarColisaoPlayerMonstros(self.monstros)
+        if (self.singlePlayer):
+            for monstro in self.monstros:
+                monstro.update(delta_time, self.mapa)
+            for monstro in self.monstros:
+                monstro.verificarColisaoBombas(self.player.getBombas())
+            self.player.verificarColisaoPlayerMonstros(self.monstros)
+            self.monstros = [m for m in self.monstros if m.getEstaVivo()]
+        else:
+            self.player2.update(delta_time)
+            self.player2.verificarColisaoBombas(self.player2.getBombas())
+            self.player2.verificarColisaoBombas(self.player.getBombas())
+            self.player.verificarColisaoBombas(self.player2.getBombas())
 
         pygame.display.flip()
     
@@ -114,14 +126,17 @@ class Janela:
     def verificarDerrota(self):
         return not self.player.getEstaVivo()
 
+    def verificarDerrotaPlayer2(self):
+        return not self.player2.getEstaVivo()
+
     def reiniciarJogo(self):
         self.mapa = [linha.copy() for linha in self.mapaOriginal]    
-        self.player = Player(self)
+        self.player = Player(self, 1)
         self.monstros = self.criarMonstros()
     
     def reiniciarFase(self):
         self.mapa = [linha.copy() for linha in self.mapaOriginal]    
-        self.player = Player(self)
+        self.player = Player(self, 1)
         self.monstros = self.criarMonstros()
     
     def proximaFase(self):
@@ -130,16 +145,15 @@ class Janela:
             novo_mapa = f"mapas/mapa{self.fase}.txt"
             self.mapaOriginal = self.carregarMapa(novo_mapa)  
             self.mapa = [linha.copy() for linha in self.mapaOriginal]
-            self.player = Player(self)
+            self.player = Player(self, 1)
             self.numeroMonstros += self.fase//2
             self.monstros = self.criarMonstros()
         except FileNotFoundError:
-            print("Sem mais fases. Voltando ao menu.")
             self.fase = 1
             self.numeroMonstros = 3 + self.fase //2
             self.mapaOriginal = self.carregarMapa(f"mapas/mapa1.txt")
             self.mapa = [linha.copy() for linha in self.mapaOriginal]
-            self.player = Player(self)
+            self.player = Player(self, 1)
             self.monstros = self.criarMonstros()
             return False  
         return True
@@ -149,4 +163,7 @@ class Janela:
     
     def setFase(self, fase):
         self.fase = fase
+    
+    def getTipoJogo(self):
+        return self.singlePlayer   #true -> single ; false -> multiplayer 
 

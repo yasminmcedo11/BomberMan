@@ -20,8 +20,8 @@ while True:
         menu.desenharMenu()
 
         if mouse.is_over_object(menu.botaoJogar) and clicou_agora:
-            menu.setEstadoAtual("jogo")
-            janela = Janela("mapas/mapa1.txt", 1)
+            menu.setEstadoAtual("jogoSingle")
+            janela = Janela("mapas/mapa1.txt", 1, True)
         if mouse.is_over_object(menu.botaoModoDeJogo) and clicou_agora:
             menu.setEstadoAtual("modoDeJogo")
         if mouse.is_over_object(menu.botaoSair) and clicou_agora:
@@ -44,23 +44,23 @@ while True:
         if menu.teclado.key_pressed("ESC"):
             menu.setEstadoAtual("menu")
         if mouse.is_over_object(menu.botaoMapa1) and clicou_agora:
-            menu.setEstadoAtual("jogo")
-            janela = Janela("mapas/mapa1.txt", 1)
+            menu.setEstadoAtual("jogoSingle")
+            janela = Janela("mapas/mapa1.txt", 1, True)
         if mouse.is_over_object(menu.botaoMapa2) and clicou_agora:
-            menu.setEstadoAtual("jogo")
-            janela = Janela("mapas/mapa2.txt", 2)
+            menu.setEstadoAtual("jogoSingle")
+            janela = Janela("mapas/mapa2.txt", 2, True)
         if mouse.is_over_object(menu.botaoMapa3) and clicou_agora:
-            menu.setEstadoAtual("jogo")
-            janela = Janela("mapas/mapa3.txt", 3)
+            menu.setEstadoAtual("jogoSingle")
+            janela = Janela("mapas/mapa3.txt", 3, True)
         if mouse.is_over_object(menu.botaoMapa4) and clicou_agora:
-            menu.setEstadoAtual("jogo")
-            janela = Janela("mapas/mapa4.txt", 4)
+            menu.setEstadoAtual("jogoSingle")
+            janela = Janela("mapas/mapa4.txt", 4, True)
         if mouse.is_over_object(menu.botaoMapa5) and clicou_agora:
-            menu.setEstadoAtual("jogo")
-            janela = Janela("mapas/mapa5.txt", 5)
+            menu.setEstadoAtual("jogoSingle")
+            janela = Janela("mapas/mapa5.txt", 5, True)
         if mouse.is_over_object(menu.botaoMapa6) and clicou_agora:
-            menu.setEstadoAtual("jogo")
-            janela = Janela("mapas/mapa6.txt", 6)
+            menu.setEstadoAtual("jogoSingle")
+            janela = Janela("mapas/mapa6.txt", 6, True)
     
     elif menu.getEstadoAtual() == "mapas":
         menu.desenharMapas()
@@ -68,26 +68,26 @@ while True:
         if menu.teclado.key_pressed("ESC"):
             menu.setEstadoAtual("menu")
         if mouse.is_over_object(menu.botaoMapa1) and clicou_agora:
-            menu.setEstadoAtual("jogo")
-            janela = Janela("mapas/mapa1.txt", 1)
+            menu.setEstadoAtual("jogoMultiplayer")
+            janela = Janela("mapas/mapa1.txt", 1, False)
         if mouse.is_over_object(menu.botaoMapa2) and clicou_agora:
-            menu.setEstadoAtual("jogo")
-            janela = Janela("mapas/mapa2.txt", 2)
+            menu.setEstadoAtual("jogoMultiplayer")
+            janela = Janela("mapas/mapa2.txt", 2, False)
         if mouse.is_over_object(menu.botaoMapa3) and clicou_agora:
-            menu.setEstadoAtual("jogo")
-            janela = Janela("mapas/mapa3.txt", 3)
+            menu.setEstadoAtual("jogoMultiplayer")
+            janela = Janela("mapas/mapa3.txt", 3, False)
         if mouse.is_over_object(menu.botaoMapa4) and clicou_agora:
-            menu.setEstadoAtual("jogo")
-            janela = Janela("mapas/mapa4.txt", 4)
+            menu.setEstadoAtual("jogoMultiplayer")
+            janela = Janela("mapas/mapa4.txt", 4, False)
         if mouse.is_over_object(menu.botaoMapa5) and clicou_agora:
-            menu.setEstadoAtual("jogo")
-            janela = Janela("mapas/mapa5.txt", 5)
+            menu.setEstadoAtual("jogoMultiplayer")
+            janela = Janela("mapas/mapa5.txt", 5, False)
         if mouse.is_over_object(menu.botaoMapa6) and clicou_agora:
-            menu.setEstadoAtual("jogo")
-            janela = Janela("mapas/mapa6.txt", 6)
+            menu.setEstadoAtual("jogoMultiplayer")
+            janela = Janela("mapas/mapa6.txt", 6, False)
 
 
-    elif menu.getEstadoAtual() == "jogo":
+    elif menu.getEstadoAtual() == "jogoSingle":
         menu.clicarJogar()
         delta_time = clock.tick(60) / 1000.0
 
@@ -99,13 +99,13 @@ while True:
         if teclas[pygame.K_SPACE]:
             janela.player.plantar_bomba()
         if not janela.player.esta_se_movendo():
-            if teclas[pygame.K_w] or teclas[pygame.K_UP]:
+            if teclas[pygame.K_UP]:
                 janela.player.mover("cima", janela.getMapa())
-            elif teclas[pygame.K_s] or teclas[pygame.K_DOWN]:
+            elif teclas[pygame.K_DOWN]:
                 janela.player.mover("baixo", janela.getMapa())
-            elif teclas[pygame.K_a] or teclas[pygame.K_LEFT]:
+            elif teclas[pygame.K_LEFT]:
                 janela.player.mover("esquerda", janela.getMapa())
-            elif teclas[pygame.K_d] or teclas[pygame.K_RIGHT]:
+            elif teclas[pygame.K_RIGHT]:
                 janela.player.mover("direita", janela.getMapa())
 
 
@@ -125,6 +125,61 @@ while True:
             janela.proximaFase()
             time.sleep(2)
            #menu.setEstadoAtual("menu")
+
+        if menu.teclado.key_pressed("ESC"):
+            janela.reiniciarJogo()
+            menu.setEstadoAtual("menu")
+    
+
+    elif menu.getEstadoAtual() == "jogoMultiplayer":
+        menu.clicarJogar()
+        delta_time = clock.tick(60) / 1000.0
+
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                rodando = False
+
+        teclas = pygame.key.get_pressed()
+        if teclas[pygame.K_p]:
+            janela.player2.plantar_bomba()
+        if not janela.player.esta_se_movendo():
+            if teclas[pygame.K_w]:
+                janela.player2.mover("cima", janela.getMapa())
+            elif teclas[pygame.K_s]:
+                janela.player2.mover("baixo", janela.getMapa())
+            elif teclas[pygame.K_a]:
+                janela.player2.mover("esquerda", janela.getMapa())
+            elif teclas[pygame.K_d]:
+                janela.player2.mover("direita", janela.getMapa())
+        
+        if teclas[pygame.K_SPACE]:
+            janela.player.plantar_bomba()
+        if not janela.player.esta_se_movendo():
+            if teclas[pygame.K_UP]:
+                janela.player.mover("cima", janela.getMapa())
+            elif teclas[pygame.K_DOWN]:
+                janela.player.mover("baixo", janela.getMapa())
+            elif teclas[pygame.K_LEFT]:
+                janela.player.mover("esquerda", janela.getMapa())
+            elif teclas[pygame.K_RIGHT]:
+                janela.player.mover("direita", janela.getMapa())
+
+
+        # Desenhar mapa
+        janela.desenharMapa()
+        janela.desenharPlayer()
+        janela.atualizarJanela(delta_time)
+
+
+        if janela.verificarDerrota():
+            janela.reiniciarJogo()
+            time.sleep(2)
+            menu.setEstadoAtual("menu")
+        
+        if janela.verificarDerrotaPlayer2():
+            janela.reiniciarJogo()
+            time.sleep(2)
+            menu.setEstadoAtual("menu")
 
         if menu.teclado.key_pressed("ESC"):
             janela.reiniciarJogo()

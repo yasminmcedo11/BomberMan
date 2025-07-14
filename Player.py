@@ -4,8 +4,12 @@ from Personagem import Personagem
 import time
 
 class Player(Personagem):
-    def __init__(self, janela, tile_size=46):
-        super().__init__(janela, "assets/walking pose 1.png", 1, 1, tile_size)
+    def __init__(self, janela, numero_player, tile_size=46):
+        self.numeroPlayer = numero_player
+        if (self.numeroPlayer == 1):
+            super().__init__(janela, "assets/walking pose 1.png", 1, 1, tile_size)
+        if (self.numeroPlayer == 2):
+            super().__init__(janela, "assets/animation characters negativ.png", 1, 11, tile_size)
 
         self.bombas = []
         self.tempo_ultima_bomba = 0
