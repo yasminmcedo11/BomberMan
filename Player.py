@@ -1,8 +1,6 @@
 from PPlay.sprite import *
 from Bomba import Bomba
-import pygame
-import os
-import uuid
+import time
 
 class Player:
     def __init__(self, janela, tile_size=46):
@@ -21,6 +19,8 @@ class Player:
         self.player.set_total_duration(800)
 
         self.bombas = []
+        self.tempo_ultima_bomba = 0
+        self.cooldown_bomba = 2
 
 
     def mover(self, direcao, mapa):
@@ -80,13 +80,17 @@ class Player:
         self.player.set_position(self.player.x, self.player.y)
     
     def plantar_bomba(self):
-        # Planta a bomba na posição atual do grid, se ainda não tiver uma lá
+        tempo_atual = time.time()
+        
+        if tempo_atual - self.tempo_ultima_bomba < self.cooldown_bomba:
+            return  
         for bomba in self.bombas:
             if bomba.linha == self.linha and bomba.coluna == self.coluna:
-                return  
+                return
 
         nova_bomba = Bomba(self.linha, self.coluna, self.tileSize, self.janela)
         self.bombas.append(nova_bomba)
+        self.tempo_ultima_bomba = tempo_atual
     
     def draw(self):
         for bomba in self.bombas:
