@@ -157,6 +157,62 @@ class Janela:
             self.monstros = self.criarMonstros()
             return False  
         return True
+    
+    def pausarJogo(self, tela, largura, altura):
+        fonte_titulo = pygame.font.SysFont("Arial", 60, bold=True)
+        fonte_subtitulo = pygame.font.SysFont("Arial", 30)
+
+        pausando = True
+        while pausando:
+            for evento in pygame.event.get():
+                if evento.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                elif evento.type == pygame.KEYDOWN:
+                    if evento.key in [pygame.K_RETURN, pygame.K_ESCAPE]:
+                        pausando = False
+
+            fundo = pygame.Surface((largura, altura))
+            fundo.set_alpha(60)  # Transparência do fundo
+            fundo.fill((0, 0, 0))  # Fundo preto transparente
+            tela.blit(fundo, (0, 0))
+
+            # Mensagem de pausa
+            texto1 = fonte_titulo.render("JOGO PAUSADO", True, (255, 255, 255))
+            texto2 = fonte_subtitulo.render("Pressione ENTER para continuar ou ESC para sair", True, (255, 255, 255))
+
+            tela.blit(texto1, ((largura - texto1.get_width()) // 2, altura // 2 - 40))
+            tela.blit(texto2, ((largura - texto2.get_width()) // 2, altura // 2 + 30))
+
+            pygame.display.update()
+            pygame.time.delay(100)
+
+    def mostrarMensagem(self, tela, largura, altura):
+        fundo = pygame.Surface((largura, altura))
+        fundo.set_alpha(180)  # Transparência do fundo
+        fundo.fill((0, 0, 0))  # Fundo preto transparente
+        tela.blit(fundo, (0, 0))
+
+        fonte_titulo = pygame.font.SysFont("Arial", 60, bold=True)
+        fonte_subtitulo = pygame.font.SysFont("Arial", 30)
+
+        if(self.player.getEstaVivo() and self.singlePlayer):
+            texto1 = fonte_titulo.render("VOCÊ GANHOU!", True, (255, 215, 0))  # Ouro
+            texto2 = fonte_subtitulo.render("Pressione ENTER para ir para a próxima fase", True, (255, 255, 255))
+        if(self.player.getEstaVivo() == False and self.singlePlayer):
+            texto1 = fonte_titulo.render("VOCÊ PERDEU!", True, (255, 215, 0))  # Ouro
+            texto2 = fonte_subtitulo.render("Pressione ENTER para reiniciar a fase", True, (255, 255, 255))
+        if(self.player.getEstaVivo() and self.singlePlayer == False):
+            texto1 = fonte_titulo.render("PLAYER1 GANHOU!", True, (255, 215, 0))  # Ouro
+            texto2 = fonte_subtitulo.render("Pressione ESC para voltar ao menu", True, (255, 255, 255))
+        if(self.player2.getEstaVivo() and self.singlePlayer == False):
+            texto1 = fonte_titulo.render("PLAYER2 GANHOU!", True, (255, 215, 0))  # Ouro
+            texto2 = fonte_subtitulo.render("Pressione ESC para voltar ao menu", True, (255, 255, 255))
+
+        tela.blit(texto1, ((largura - texto1.get_width()) // 2, altura // 3))
+        tela.blit(texto2, ((largura - texto2.get_width()) // 2, altura // 3 + 80))
+
+        pygame.display.update()
 
     def getMapa(self):
         return self.mapa

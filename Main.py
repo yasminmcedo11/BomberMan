@@ -10,6 +10,7 @@ rodando = True
 menu = Menu()
 mouse = Mouse()
 botao_mouse_antes = False
+jogo_congelado = False
 
 
 while True:
@@ -94,94 +95,122 @@ while True:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 rodando = False
+            elif evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_TAB:
+                    janela.pausarJogo(janela.tela, janela.largura, janela.altura)
 
         teclas = pygame.key.get_pressed()
-        if teclas[pygame.K_SPACE]:
-            janela.player.plantar_bomba()
-        if not janela.player.esta_se_movendo():
-            if teclas[pygame.K_UP]:
-                janela.player.mover("cima", janela.getMapa())
-            elif teclas[pygame.K_DOWN]:
-                janela.player.mover("baixo", janela.getMapa())
-            elif teclas[pygame.K_LEFT]:
-                janela.player.mover("esquerda", janela.getMapa())
-            elif teclas[pygame.K_RIGHT]:
-                janela.player.mover("direita", janela.getMapa())
+        if not jogo_congelado:
+            if teclas[pygame.K_SPACE]:
+                janela.player.plantar_bomba()
+            if not janela.player.esta_se_movendo():
+                if teclas[pygame.K_UP]:
+                    janela.player.mover("cima", janela.getMapa())
+                elif teclas[pygame.K_DOWN]:
+                    janela.player.mover("baixo", janela.getMapa())
+                elif teclas[pygame.K_LEFT]:
+                    janela.player.mover("esquerda", janela.getMapa())
+                elif teclas[pygame.K_RIGHT]:
+                    janela.player.mover("direita", janela.getMapa())
 
 
-        # Desenhar mapa
-        janela.desenharMapa()
-        janela.desenharPlayer()
-        janela.desenharMonstro()
-        janela.atualizarJanela(delta_time)
+            # Desenhar mapa
+            janela.desenharMapa()
+            janela.desenharPlayer()
+            janela.desenharMonstro()
+            janela.atualizarJanela(delta_time)
 
 
         if janela.verificarDerrota():
-            janela.reiniciarFase()
-            time.sleep(2)
-            #menu.setEstadoAtual("menu")
+            jogo_congelado = True
+            janela.mostrarMensagem(janela.tela, janela.largura, janela.altura)
+            pygame.display.update()
+            if teclas[pygame.K_RETURN]:
+                jogo_congelado = False
+                janela.reiniciarFase()
+                time.sleep(1)
         
         if janela.verificarVitoria():
-            janela.proximaFase()
-            time.sleep(2)
-           #menu.setEstadoAtual("menu")
+            jogo_congelado = True
+            janela.mostrarMensagem(janela.tela, janela.largura, janela.altura)
+            pygame.display.update()
+            if teclas[pygame.K_RETURN]:
+                jogo_congelado = False
+                janela.proximaFase()
+                time.sleep(1)
 
         if menu.teclado.key_pressed("ESC"):
+            jogo_congelado = False
             janela.reiniciarJogo()
             menu.setEstadoAtual("menu")
     
 
     elif menu.getEstadoAtual() == "jogoMultiplayer":
-        menu.clicarJogar()
+        #menu.clicarJogar()
         delta_time = clock.tick(60) / 1000.0
 
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 rodando = False
+            elif evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_TAB:
+                    janela.pausarJogo(janela.tela, janela.largura, janela.altura)
 
         teclas = pygame.key.get_pressed()
-        if teclas[pygame.K_p]:
-            janela.player2.plantar_bomba()
-        if not janela.player.esta_se_movendo():
-            if teclas[pygame.K_w]:
-                janela.player2.mover("cima", janela.getMapa())
-            elif teclas[pygame.K_s]:
-                janela.player2.mover("baixo", janela.getMapa())
-            elif teclas[pygame.K_a]:
-                janela.player2.mover("esquerda", janela.getMapa())
-            elif teclas[pygame.K_d]:
-                janela.player2.mover("direita", janela.getMapa())
-        
-        if teclas[pygame.K_SPACE]:
-            janela.player.plantar_bomba()
-        if not janela.player.esta_se_movendo():
-            if teclas[pygame.K_UP]:
-                janela.player.mover("cima", janela.getMapa())
-            elif teclas[pygame.K_DOWN]:
-                janela.player.mover("baixo", janela.getMapa())
-            elif teclas[pygame.K_LEFT]:
-                janela.player.mover("esquerda", janela.getMapa())
-            elif teclas[pygame.K_RIGHT]:
-                janela.player.mover("direita", janela.getMapa())
+        if not jogo_congelado:
+            if teclas[pygame.K_p]:
+                janela.player2.plantar_bomba()
+            if not janela.player.esta_se_movendo():
+                if teclas[pygame.K_w]:
+                    janela.player2.mover("cima", janela.getMapa())
+                elif teclas[pygame.K_s]:
+                    janela.player2.mover("baixo", janela.getMapa())
+                elif teclas[pygame.K_a]:
+                    janela.player2.mover("esquerda", janela.getMapa())
+                elif teclas[pygame.K_d]:
+                    janela.player2.mover("direita", janela.getMapa())
+            
+            if teclas[pygame.K_SPACE]:
+                janela.player.plantar_bomba()
+            if not janela.player.esta_se_movendo():
+                if teclas[pygame.K_UP]:
+                    janela.player.mover("cima", janela.getMapa())
+                elif teclas[pygame.K_DOWN]:
+                    janela.player.mover("baixo", janela.getMapa())
+                elif teclas[pygame.K_LEFT]:
+                    janela.player.mover("esquerda", janela.getMapa())
+                elif teclas[pygame.K_RIGHT]:
+                    janela.player.mover("direita", janela.getMapa())
 
 
-        # Desenhar mapa
-        janela.desenharMapa()
-        janela.desenharPlayer()
-        janela.atualizarJanela(delta_time)
+            # Desenhar mapa
+            janela.desenharMapa()
+            janela.desenharPlayer()
+            janela.atualizarJanela(delta_time)
 
 
         if janela.verificarDerrota():
-            janela.reiniciarJogo()
-            time.sleep(2)
-            menu.setEstadoAtual("menu")
+            jogo_congelado = True
+            janela.mostrarMensagem(janela.tela, janela.largura, janela.altura)
+            pygame.display.update()
+            if teclas[pygame.K_RETURN]:
+                jogo_congelado = False
+                janela.reiniciarJogo()
+                time.sleep(1)
+                menu.setEstadoAtual("menu")
         
         if janela.verificarDerrotaPlayer2():
-            janela.reiniciarJogo()
-            time.sleep(2)
-            menu.setEstadoAtual("menu")
+            jogo_congelado = True
+            janela.mostrarMensagem(janela.tela, janela.largura, janela.altura)
+            pygame.display.update()
+            if teclas[pygame.K_RETURN]:
+                jogo_congelado = False
+                janela.reiniciarJogo()
+                time.sleep(1)
+                menu.setEstadoAtual("menu")
 
         if menu.teclado.key_pressed("ESC"):
+            jogo_congelado = False
             janela.reiniciarJogo()
             menu.setEstadoAtual("menu")
 
