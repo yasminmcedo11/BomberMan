@@ -34,10 +34,7 @@ class Janela:
         }
 
         self.player = Player(self)
-
-        posicoes_validas = self.encontrarPosicoesValidas(excluidos={(1, 1)})
-        posicoes_monstros = random.sample(posicoes_validas, k=3)
-        self.monstros = [Monstro(self, l, c) for l, c in posicoes_monstros]
+        self.monstros = self.criarMonstros()
         
                 
 
@@ -72,6 +69,11 @@ class Janela:
                 if tile in "GHIJ" and (i, j) not in excluidos:
                     posicoes.append((i, j))
         return posicoes
+    
+    def criarMonstros(self):
+        posicoes_validas = self.encontrarPosicoesValidas(excluidos={(1, 1)})
+        posicoes_monstros = random.sample(posicoes_validas, k=3)
+        return [Monstro(self, l, c) for l, c in posicoes_monstros]
 
     def desenharMapa(self):
         self.tela.fill((0, 0, 0))  
@@ -96,6 +98,7 @@ class Janela:
     def reiniciarJogo(self):
         self.mapa = [linha.copy() for linha in self.mapaOriginal]    
         self.player = Player(self)
+        self.monstros = self.criarMonstros()
 
     def getMapa(self):
         return self.mapa
