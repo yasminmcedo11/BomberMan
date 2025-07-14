@@ -3,7 +3,10 @@ import random
 
 class Monstro(Personagem):
     def __init__(self, janela, linha, coluna, tile_size=46):
-        super().__init__(janela, "assets/red1.png", linha, coluna, tile_size)
+        cores = ["blue", "green", "red", "pink"]
+        cor_escolhida = random.choice(cores)
+        caminho_sprite = f"assets/{cor_escolhida}1.png"
+        super().__init__(janela, caminho_sprite, linha, coluna, tile_size)
         self.direcoes = ["cima", "baixo", "esquerda", "direita"]
         self.tempo_mudar_direcao = 1
         self.tempo_restante = self.tempo_mudar_direcao
