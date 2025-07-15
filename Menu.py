@@ -48,8 +48,8 @@ class Menu:
         self.botaoMapa2 = Sprite("assets/botaoMapa2.png")
         self.botaoMapa3 = Sprite("assets/botaoMapa3.png")
         self.botaoMapa4 = Sprite("assets/botaoMapa4.png")
-        self.botaoMapa5 = Sprite("assets/botaoMapa4.png")
-        self.botaoMapa6 = Sprite("assets/botaoMapa4.png")
+        self.botaoMapa5 = Sprite("assets/botaoMapa5.png")
+        self.botaoMapa6 = Sprite("assets/botaoMapa6.png")
 
         botoes_mapa = [
             self.botaoMapa1, self.botaoMapa2, self.botaoMapa3,

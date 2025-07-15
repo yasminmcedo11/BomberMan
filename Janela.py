@@ -78,7 +78,7 @@ class Janela:
         return posicoes
     
     def criarMonstros(self):
-        posicoes_validas = self.encontrarPosicoesValidas(excluidos={(1, 1)})
+        posicoes_validas = self.encontrarPosicoesValidas(excluidos={(1, 1),(1,2), (2,1), (2,2)})
         posicoes_monstros = random.sample(posicoes_validas, self.numeroMonstros)
         return [Monstro(self, l, c) for l, c in posicoes_monstros]
 
@@ -207,7 +207,7 @@ class Janela:
             if(self.player.getEstaVivo()):
                 texto1 = fonte_titulo.render("PLAYER1 GANHOU!", True, (255, 215, 0))  # Ouro
                 texto2 = fonte_subtitulo.render("Pressione ESC para voltar ao menu", True, (255, 255, 255))
-            if(self.player2.getEstaVivo()):
+            else:
                 texto1 = fonte_titulo.render("PLAYER2 GANHOU!", True, (255, 215, 0))  # Ouro
                 texto2 = fonte_subtitulo.render("Pressione ESC para voltar ao menu", True, (255, 255, 255))
 
