@@ -1,5 +1,8 @@
 from PPlay.sprite import*
+from PPlay.sound import*
 import time
+
+som_explosao = Sound("sounds/explosao.ogg")
 
 class Bomba:
     def __init__(self, linha, coluna, tileSize, janela, tempo_antes_explodir=2, tempo_duracao_explosao=1):
@@ -56,6 +59,7 @@ class Bomba:
         if not self.explodiu:
             if time.time() - self.tempo_criacao >= self.tempo_antes_explodir:
                 self.explodiu = True
+                som_explosao.play()
                 self.propagar_explosao(self.janela.getMapa())
                 self.tempo_inicio_explosao = time.time()
                 self.frame_atual = 0

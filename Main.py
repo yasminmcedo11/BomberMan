@@ -1,16 +1,21 @@
 from Menu import Menu
 from Janela import Janela
 from PPlay.mouse import *
-import pygame
 import time
+import pygame
 
 pygame.init()
+pygame.mixer.init()
 clock = pygame.time.Clock()
 rodando = True
 menu = Menu()
 mouse = Mouse()
 botao_mouse_antes = False
 jogo_congelado = False
+
+pygame.mixer.music.load("sounds/main.ogg")
+pygame.mixer.music.set_volume(0.2)
+pygame.mixer.music.play(-1)
 
 
 while True:
@@ -146,7 +151,7 @@ while True:
     
 
     elif menu.getEstadoAtual() == "jogoMultiplayer":
-        #menu.clicarJogar()
+        menu.clicarJogar()
         delta_time = clock.tick(60) / 1000.0
 
         for evento in pygame.event.get():

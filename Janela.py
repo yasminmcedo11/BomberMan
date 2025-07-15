@@ -196,18 +196,20 @@ class Janela:
         fonte_titulo = pygame.font.SysFont("Arial", 60, bold=True)
         fonte_subtitulo = pygame.font.SysFont("Arial", 30)
 
-        if(self.player.getEstaVivo() and self.singlePlayer):
-            texto1 = fonte_titulo.render("VOCÊ GANHOU!", True, (255, 215, 0))  # Ouro
-            texto2 = fonte_subtitulo.render("Pressione ENTER para ir para a próxima fase", True, (255, 255, 255))
-        if(self.player.getEstaVivo() == False and self.singlePlayer):
-            texto1 = fonte_titulo.render("VOCÊ PERDEU!", True, (255, 215, 0))  # Ouro
-            texto2 = fonte_subtitulo.render("Pressione ENTER para reiniciar a fase", True, (255, 255, 255))
-        if(self.player.getEstaVivo() and self.singlePlayer == False):
-            texto1 = fonte_titulo.render("PLAYER1 GANHOU!", True, (255, 215, 0))  # Ouro
-            texto2 = fonte_subtitulo.render("Pressione ESC para voltar ao menu", True, (255, 255, 255))
-        if(self.player2.getEstaVivo() and self.singlePlayer == False):
-            texto1 = fonte_titulo.render("PLAYER2 GANHOU!", True, (255, 215, 0))  # Ouro
-            texto2 = fonte_subtitulo.render("Pressione ESC para voltar ao menu", True, (255, 255, 255))
+        if(self.singlePlayer):
+            if(self.player.getEstaVivo()):
+                texto1 = fonte_titulo.render("VOCÊ GANHOU!", True, (255, 215, 0))  # Ouro
+                texto2 = fonte_subtitulo.render("Pressione ENTER para ir para a próxima fase", True, (255, 255, 255))
+            else: 
+                texto1 = fonte_titulo.render("VOCÊ PERDEU!", True, (255, 215, 0))  # Ouro
+                texto2 = fonte_subtitulo.render("Pressione ENTER para reiniciar a fase", True, (255, 255, 255))
+        else:
+            if(self.player.getEstaVivo()):
+                texto1 = fonte_titulo.render("PLAYER1 GANHOU!", True, (255, 215, 0))  # Ouro
+                texto2 = fonte_subtitulo.render("Pressione ESC para voltar ao menu", True, (255, 255, 255))
+            if(self.player2.getEstaVivo()):
+                texto1 = fonte_titulo.render("PLAYER2 GANHOU!", True, (255, 215, 0))  # Ouro
+                texto2 = fonte_subtitulo.render("Pressione ESC para voltar ao menu", True, (255, 255, 255))
 
         tela.blit(texto1, ((largura - texto1.get_width()) // 2, altura // 3))
         tela.blit(texto2, ((largura - texto2.get_width()) // 2, altura // 3 + 80))
